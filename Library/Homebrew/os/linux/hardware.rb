@@ -6,9 +6,10 @@ module LinuxCPUs
   }.freeze
   def optimization_flags; OPTIMIZATION_FLAGS; end
 
-  # Linux supports x86 only, and universal archs do not apply
+  # Linux supports x86 only, (experimental armv6l) and universal archs do not apply
   def arch_32_bit; :i386; end
   def arch_64_bit; :x86_64; end
+  def arch_arm;    :armv6l; end
   def universal_archs; [].extend ArchitectureListExtension; end
 
   def cpuinfo
@@ -18,6 +19,8 @@ module LinuxCPUs
   def type
     @type ||= if cpuinfo =~ /Intel|AMD/
       :intel
+    elsif cpuinfo =~ /ARM/
+      :arm
     else
       :dunno
     end
